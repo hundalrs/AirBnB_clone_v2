@@ -132,6 +132,38 @@ class test_console(unittest.TestCase):
         x = (self.capt_out.getvalue())
         self.assertEqual("** class doesn't exist **\n", x)
 
+    def test_class_paramter_works(self):
+        '''
+        Testing if parameters work with create
+        '''
+        console = self.create()
+        console.onecmd("create Place name='California'")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
+
+    def test_class_paramter_enter_single_value(self):
+        '''
+        Testing if skips single argument without proper paramter formatting
+        '''
+        console = self.create()
+        console.onecmd("create Place 3")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
+
+    def test_class_paramter_enter_float(self):
+        '''
+        Testing if it takes float
+        '''
+        console = self.create()
+        console.onecmd("create Place name='California' longitude=-122.22")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
+
+    def test_class_two_string_parameters(self):
+        '''
+        Testing if paramters work with create
+        '''
+        console = self.create()
+        console.onecmd("create Place name='California' country='United States'")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
+
     '''
     def test_destroy(self):
         console = self.create()
