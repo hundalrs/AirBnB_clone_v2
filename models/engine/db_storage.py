@@ -5,18 +5,12 @@
 
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import scoped_session, sessionmaker
 from models.base_model import BaseModel, Base
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
-from models import classes
+import models
 
 
-class DBStorage(self):
+class DBStorage():
 
     __engine = None
     __session = None
@@ -30,17 +24,18 @@ class DBStorage(self):
                                               getenv('HBNB_MYSQL_HOST'),
                                               getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
-        if ('HBNB_ENV' == test):
+        if ('HBNB_ENV' == 'test'):
             Base.metadata.drop_all(self.__engine)
-        self.reload()
+#        self.reload()
 
     def all(self, cls=None):
         '''queries on current database session'''
         class_list = []
         if cls == None:
-            class_list = [Place, State, User, City, Amenity, Review]
+            for key, value in models.classes.items():
+                class_list.append(value)
         else:
-            if str(cls) in classes:
+            if str(cls) in models.classes:
                 class_list = [cls]
         new_dict = {}
         for search in class_list:
@@ -63,7 +58,7 @@ class DBStorage(self):
         '''deletes from current db session'''
         if obj is None:
             return
-        delte_obj = self.__session.query(type(obj)).filter(id == obj.id)
+        delete_obj = self.__session.query(type(obj)).filter(type(obj).id )
         self.__session.delete(delete_obj)
 
     def reload(self):
