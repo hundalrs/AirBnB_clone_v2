@@ -60,3 +60,4 @@ class FileStorage:
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
         del self.__objects[key]
+        self.save()
