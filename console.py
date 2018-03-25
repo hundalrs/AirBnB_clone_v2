@@ -44,17 +44,26 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         try:
+            number_dict = {}
+            check_args = args.split()
+            for checks in range(1, len(check_args)):
+                key, value = check_args[checks].split('=')
+                if '"' not in value:
+                    if "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                    number_dict[key] = value
             args = shlex.split(args)
             new_instance = eval(args[0])()
             for strings in range(1, len(args)):
-                    if "=" in args[strings]:
-                        key, value = args[strings].split('=')
-                        value = value.replace('_', ' ')
-                        if re.search('[a-zA-Z]', value) == None:
-                            if "." in value:
-                                value = float(value)
-                            else:
-                                value = int(value)
+                if "=" in args[strings]:
+                    key, value = args[strings].split('=')
+                    value = value.replace('_', ' ')
+                    if key not in number_dict:
+                        setattr(new_instance, key, value)
+                    else:
+                        value = number_dict[key]
                         setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
