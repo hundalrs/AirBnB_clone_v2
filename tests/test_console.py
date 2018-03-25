@@ -132,25 +132,25 @@ class test_console(unittest.TestCase):
         x = (self.capt_out.getvalue())
         self.assertEqual("** class doesn't exist **\n", x)
 
-    def test_class_paramter_works(self):
+    def test_class_parameter_works(self):
         '''
-        Testing if parameters work with create
+            Testing if parameters work with create
         '''
         console = self.create()
         console.onecmd("create Place name='California'")
         self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
-    def test_class_paramter_enter_single_value(self):
+    def test_class_parameter_enter_single_value(self):
         '''
-        Testing if skips single argument without proper paramter formatting
+            Testing if skips single argument without proper parameter formatting
         '''
         console = self.create()
         console.onecmd("create Place 3")
         self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
-    def test_class_paramter_enter_float(self):
+    def test_class_parameter_enter_float(self):
         '''
-        Testing if it takes float
+            Testing if it takes float
         '''
         console = self.create()
         console.onecmd("create Place name='California' longitude=-122.22")
@@ -158,19 +158,16 @@ class test_console(unittest.TestCase):
 
     def test_class_two_string_parameters(self):
         '''
-        Testing if paramters work with create
+            Testing if parameters work with create
         '''
         console = self.create()
         console.onecmd("create Place name='California' country='United States'")
         self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
-    '''
-    def test_destroy(self):
+    def test_name_contains_number(self):
+        '''
+            Tests if a string contains a number, but not all numbers
+        '''
         console = self.create()
-        self.assertTrue(console.onecmd("destroy"))
-
-    def test_update(self):
-        console = self.create()
-        self.assertTrue(console.onecmd("update"))
-
-    '''
+        console.onecmd("create Place name='3youe'")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
