@@ -30,7 +30,7 @@ class State(BaseModel, Base):
             '''
             cls_dict = models.storage.all(City)
             cities_in_state = []
-            current_state = State.id
+            current_state = self.id
             for key, value in cls_dict.items():
                 if value.state_id == current_state:
                     cities_in_state.append(value)
