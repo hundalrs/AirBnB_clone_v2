@@ -25,10 +25,13 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
+            '''
+                Getter for cities when using FileStorage system
+            '''
             cls_dict = models.storage.all(City)
-            cities_in_state = {}
+            cities_in_state = []
             current_state = State.id
             for key, value in cls_dict.items():
                 if value.state_id == current_state:
-                    cities_in_state[key] = value
+                    cities_in_state.append(value)
             return cities_in_state
