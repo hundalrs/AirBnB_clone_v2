@@ -55,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                     number_dict[key] = value
             args = shlex.split(args)
-            print(args)
+            print(args[0])
             new_instance = eval(args[0])()
             print("after new_instance")
             for strings in range(1, len(args)):
@@ -72,8 +72,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
             print(new_instance.id)
 
-        except Exception as e:
-            print(e)
+        except NameError:
             print("** class doesn't exist **")
 
     def do_show(self, args):
