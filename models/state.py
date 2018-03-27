@@ -4,8 +4,8 @@
 '''
 
 from models.base_model import BaseModel, Base
-from models.city import City
-from models.state import State
+#from models.city import City
+import models
 import os
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
@@ -19,6 +19,7 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
+
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         cities = relationship("City", backref="state",
                             cascade="delete, all, delete-orphan")
@@ -28,7 +29,7 @@ class State(BaseModel, Base):
             '''
                 Getter for cities when using FileStorage system
             '''
-            cls_dict = models.storage.all(City)
+            cls_dict = models.storage.all(models.classes["City"])
             cities_in_state = []
             current_state = self.id
             for key, value in cls_dict.items():
