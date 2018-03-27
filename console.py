@@ -13,6 +13,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import models
 
 
 class HBNBCommand(cmd.Cmd):
@@ -55,11 +56,8 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                     number_dict[key] = value
             args = shlex.split(args)
-            print(args[0])
             new_instance = eval(args[0])()
-            print("after new_instance")
             for strings in range(1, len(args)):
-                print("2.5")
                 if "=" in args[strings]:
                     key, value = args[strings].split('=')
                     value = value.replace('_', ' ')
@@ -68,7 +66,6 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         value = number_dict[key]
                         setattr(new_instance, key, value)
-            print("3rd")
             new_instance.save()
             print(new_instance.id)
 
@@ -87,9 +84,8 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        storage = FileStorage()
-        storage.reload()
-        obj_dict = storage.all()
+        models.storage.reload()
+        obj_dict = models.storage.all()
         try:
             eval(args[0])
         except NameError:
@@ -137,9 +133,8 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
-        storage.reload()
-        objects = storage.all()
+        models.storage.reload()
+        objects = models.storage.all()
         try:
             if len(args) != 0:
                 eval(args)
