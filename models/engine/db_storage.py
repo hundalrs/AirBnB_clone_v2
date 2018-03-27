@@ -41,7 +41,9 @@ class DBStorage():
             if str(cls) in models.classes:
                 class_list = [cls]
         new_dict = {}
+        print(class_list)
         for search in class_list:
+            print(search)
             capture = self.__session.query(search).all()
             for objects in capture:
                 key = str(objects.__class__.__name__) + '.' + objects.id
