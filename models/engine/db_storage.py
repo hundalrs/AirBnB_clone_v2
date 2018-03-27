@@ -28,7 +28,7 @@ class DBStorage():
                                       pool_pre_ping=True)
         if ('HBNB_ENV' == 'test'):
             Base.metadata.drop_all(self.__engine)
-            self.save()
+#            self.save()
 
     def all(self, cls=None):
         '''queries on current database session'''
@@ -38,7 +38,8 @@ class DBStorage():
             for key, value in models.classes.items():
                 class_list.append(value)
         else:
-            if str(cls) in models.classes:
+            print("IN HERE")
+            if cls in models.classes:
                 class_list = [cls]
         new_dict = {}
         print(class_list)
