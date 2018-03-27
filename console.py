@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        models.storage.reload()
+#        models.storage.reload()
         objects = models.storage.all()
         try:
             if len(args) != 0:
@@ -155,8 +155,7 @@ class HBNBCommand(cmd.Cmd):
             Update an instance based on the class name and id
             sent as args.
         '''
-        storage = FileStorage()
-        storage.reload()
+#        storage.reload()
         args = shlex.split(args)
         if len(args) == 0:
             print("** class name missing **")
@@ -176,7 +175,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         key = args[0] + "." + args[1]
-        obj_dict = storage.all()
+        obj_dict = models.storage.all()
         try:
             obj_value = obj_dict[key]
         except KeyError:
@@ -201,9 +200,8 @@ class HBNBCommand(cmd.Cmd):
             Counts/retrieves the number of instances.
         '''
         obj_list = []
-        storage = FileStorage()
-        storage.reload()
-        objects = storage.all()
+#        storage.reload()
+        objects = models.storage.all()
         try:
             if len(args) != 0:
                 eval(args)
