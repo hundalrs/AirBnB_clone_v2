@@ -26,9 +26,8 @@ class DBStorage():
                                               getenv('HBNB_MYSQL_HOST'),
                                               getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
-        if ('HBNB_ENV' == 'test'):
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-#            self.save()
 
     def all(self, cls=None):
         '''queries on current database session'''
@@ -38,14 +37,14 @@ class DBStorage():
             for key, value in models.classes.items():
                 class_list.append(value)
         else:
-            print("IN HERE")
-            if cls in models.classes:
+            if cls in models.classes.values():
                 class_list = [cls]
         new_dict = {}
-        print(class_list)
         for search in class_list:
-            print(search)
-            capture = self.__session.query(search).all()
+            try:
+                capture = self.__session.query(search).all()
+            except:
+                continue
             for objects in capture:
                 key = str(objects.__class__.__name__) + '.' + objects.id
                 new_dict[key] = objects
