@@ -13,7 +13,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -33,6 +32,7 @@ class HBNBCommand(cmd.Cmd):
         '''
             Exits after receiving the EOF signal.
         '''
+        print()
         return True
 
     def do_create(self, args):
@@ -55,8 +55,11 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                     number_dict[key] = value
             args = shlex.split(args)
+            print(args)
             new_instance = eval(args[0])()
+            print("after new_instance")
             for strings in range(1, len(args)):
+                print("2.5")
                 if "=" in args[strings]:
                     key, value = args[strings].split('=')
                     value = value.replace('_', ' ')
@@ -65,10 +68,12 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         value = number_dict[key]
                         setattr(new_instance, key, value)
+            print("3rd")
             new_instance.save()
             print(new_instance.id)
 
-        except:
+        except Exception as e:
+            print(e)
             print("** class doesn't exist **")
 
     def do_show(self, args):
