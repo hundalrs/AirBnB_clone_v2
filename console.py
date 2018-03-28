@@ -49,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
             check_args = args.split()
             for checks in range(1, len(check_args)):
                 key, value = check_args[checks].split('=')
-                if '"' not in value:
+                if '"' not in value and '\'' not in value:
                     if "." in value:
                         value = float(value)
                     else:
