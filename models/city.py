@@ -12,9 +12,10 @@ class City(BaseModel, Base):
     '''
         Define the class City that inherits from BaseModel.
     '''
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        __tablename__ = "cities"
 
+    __tablename__ = 'cities'
+
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
 
