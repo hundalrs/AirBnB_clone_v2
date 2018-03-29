@@ -4,16 +4,26 @@
 '''
 from models.base_model import BaseModel, Base
 import os
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float, Table
 from sqlalchemy.orm import relationship
+
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    association_table = Table("place_amenity", Base.metadata,
+        Column('place_id', String(60), ForeignKey('places.id'),
+                primary_key=True, nullable=False),
+        Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                primary_key=True, nullable=False))
+
 
 class Place(BaseModel, Base):
     '''
         Define the class Place that inherits from BaseModel.
     '''
 
-    __tablename__ = 'place'
+    __tablename__ = 'places'
 
+
+    
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
         user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
@@ -27,6 +37,8 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
 
         reviews = relationship("Review", backref="place", cascade="delete")
+
+        amenities = relationship("Amenity", secondary=association_table, viewonly=False)
 
     else:
 
@@ -54,3 +66,23 @@ class Place(BaseModel, Base):
                 if value.place_id == current_place:
                     reviews_of_place.append(value)
             return reviews_of_place
+
+        @property
+        def amenities(self):
+            '''
+                Getter for all the amenities
+            '''
+            all_amenities = models.storage.all(models.classes["Amenity"])
+            for each_amen in all_amenities:
+                if each_amen.place_id == self.id:
+                    amenity_list.append(each_amen)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            '''
+                Setter for adding an object into the list of amenities
+            '''
+            if type(obj) == models.classes["Amenity"]:
+#                amenity_list = self.amenities
+                amenity_list.append(obj)
