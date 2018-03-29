@@ -5,37 +5,55 @@
 import uuid
 from datetime import datetime
 import models
+import os
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
 
-Base = declarative_base()
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    Base = declarative_base()
+else:
+    class Base:
+        pass
 
 
 class BaseModel:
     '''
         Base class for other classes to be used for the duration.
     '''
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        id = Column(String(60), primary_key=True, nullable=False)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         '''
             Initialize public instance attributes.
         '''
-        if (len(kwargs) == 0):
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-        else:
-            kwargs["created_at"] = datetime.strptime(kwargs["created_at"],
-                                                     "%Y-%m-%dT%H:%M:%S.%f")
-            kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
-                                                     "%Y-%m-%dT%H:%M:%S.%f")
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        if kwargs:
             for key, val in kwargs.items():
-                if "__class__" not in key:
-                    setattr(self, key, val)
+                if "created_at" in kwargs:
+                    kwargs["created_at"] = datetime.strptime(kwargs["created_at"],
+                                                             "%Y-%m-%dT%H:%M:%S.%f")
+                if "updated_at" in kwargs:
+                     kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
+                                                              "%Y-%m-%dT%H:%M:%S.%f")
+                if key in self.__dict__:
+                    self.__dict__[key] = val
+                else:
+                    if "__class__" not in key:
+                        setattr(self, key, val)
+#        else:
+#            kwargs["created_at"] = datetime.strptime(kwargs["created_at"],
+#                                                     "%Y-%m-%dT%H:%M:%S.%f")
+#            kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
+#                                                     "%Y-%m-%dT%H:%M:%S.%f")
+#            for key, val in kwargs.items():
+#                if "__class__" not in key:
+#                    setattr(self, key, val)
 
     def __str__(self):
         '''
