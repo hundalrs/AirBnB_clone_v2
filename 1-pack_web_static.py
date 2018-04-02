@@ -12,7 +12,7 @@ def do_pack():
     timestamp = time.strftime("%Y%m%d%H%M%S")
     try:
         local("mkdir -p versions")
-        local("tar -cvzf versions/web_static_{}.tgz /web_static".
+        local("tar -cvzf versions/web_static_{}.tgz web_static/".
               format(timestamp))
         return "versions/web_static_{}.tgz".format(timestamp)
     except:
