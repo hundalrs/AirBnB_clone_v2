@@ -23,7 +23,7 @@ echo -e "<html>\n    <head>\n    </head>\n    <body>\n        Holberton School\n
 sudo chown -R ubuntu:ubuntu /data/
 
 # Create a location block to serve the "current" content when /hbnb_static is typed in
-sed -i "43i\ \tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t\tautoindex off;\n\t}\n" /etc/nginx/sites-enabled/default
+sed -i "43i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t\tautoindex off;\n\t}\n" /etc/nginx/sites-enabled/default
 
 # Restart NGINX
 sudo service nginx restart
