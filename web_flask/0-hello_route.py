@@ -3,10 +3,10 @@
 
 from flask import Flask
 
-app = Flask(__name__, strict_slashes=False)
+app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def hello_hbnb():
     '''Prints message Hello HBNB!'''
     return "Hello HBNB!"
