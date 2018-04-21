@@ -18,7 +18,7 @@ class FileStorage:
             Return a dictionary of all the objects that match the passed class
             or return all if no class was passed
         '''
-        if cls == None:
+        if cls is None:
             return self.__objects
         else:
             cls_dict = {}
