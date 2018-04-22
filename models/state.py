@@ -4,7 +4,6 @@
 '''
 
 from models.base_model import BaseModel, Base
-#from models.city import City
 import models
 import os
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
