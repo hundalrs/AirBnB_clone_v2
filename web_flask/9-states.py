@@ -17,6 +17,7 @@ def states_html():
     return render_template('9-states.html', state_objs=state_objs,
                            state_list=None)
 
+
 @app.route('/states/<id>', strict_slashes=False)
 def state_id(id):
     '''displays states with id'''
