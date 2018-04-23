@@ -17,15 +17,17 @@ def states_html():
     return render_template('9-states.html', state_objs=state_objs,
                            state_list=None)
 
-
+@app.route('/states/', strict_slashes=False)
 @app.route('/states/<id>', strict_slashes=False)
-def state_id(id):
+def state_id(id=None):
     '''displays states with id'''
     state_list = []
     state_objs = storage.all(classes["State"])
     key = "State." + str(id)
     if key in state_objs:
         state_list.append(state_objs[key])
+    else:
+        state_list = None
     return render_template('9-states.html', state_list=state_list,
                            state_objs=None)
 
